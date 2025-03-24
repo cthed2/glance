@@ -1,10 +1,10 @@
-[Jump to function definitions](#functions)
+[Saltar a las definiciones de función](#funciones)
 
-## Examples
+## Ejemplos
 
-The best way to get an idea of how the templates work would be with a bunch examples. Here are the most common use cases:
+La mejor manera de hacerse una idea de cómo funcionan las plantillas sería con un montón de ejemplos. Aquí están los casos de uso más comunes:
 
-JSON response:
+Respuesta JSON:
 
 ```json
 {
@@ -13,14 +13,14 @@ JSON response:
 }
 ```
 
-To access the two fields in the JSON response, you would use the following:
+Para acceder a los dos campos en la respuesta JSON, usarías lo siguiente:
 
 ```html
 <div>{{ .JSON.String "title" }}</div>
 <div>{{ .JSON.String "content" }}</div>
 ```
 
-Output:
+Salida:
 
 ```html
 <div>My Title</div>
@@ -29,7 +29,7 @@ Output:
 
 <hr>
 
-JSON response:
+Respuesta JSON:
 
 ```json
 {
@@ -47,7 +47,7 @@ JSON response:
 }
 ```
 
-To loop through the array of posts, you would use the following:
+Para iterar a través del array de publicaciones, usarías lo siguiente:
 
 ```html
 {{ range .JSON.Array "posts" }}
@@ -56,7 +56,7 @@ To loop through the array of posts, you would use the following:
 {{ end }}
 ```
 
-Output:
+Salida:
 
 ```html
 <div>My Title</div>
@@ -65,9 +65,9 @@ Output:
 <div>My Content 2</div>
 ```
 
-Notice the missing `.JSON` when accessing the title and content, this is because the range function sets the context to the current array element.
+Observa la falta de `.JSON` al acceder al título y al contenido, esto se debe a que la función `range` establece el contexto al elemento actual del array.
 
-If you want to access the top-level context within the range, you can use the following:
+Si quieres acceder al contexto de nivel superior dentro del `range`, puedes usar lo siguiente:
 
 ```html
 {{ range .JSON.Array "posts" }}
@@ -77,7 +77,7 @@ If you want to access the top-level context within the range, you can use the fo
 {{ end }}
 ```
 
-Output:
+Salida:
 
 ```html
 <div>My Title</div>
@@ -90,7 +90,7 @@ Output:
 
 <hr>
 
-JSON response:
+Respuesta JSON:
 
 ```json
 [
@@ -101,7 +101,7 @@ JSON response:
 ]
 ```
 
-Somewhat awkwardly, when the current context is a basic type that isn't an object, the way you specify its type is to use an empty string as the key. So, to loop through the array of strings, you would use the following:
+De forma un tanto extraña, cuando el contexto actual es un tipo básico que no es un objeto, la forma de especificar su tipo es usar una cadena vacía como clave. Así que, para iterar a través del array de cadenas, usarías lo siguiente:
 
 ```html
 {{ range .JSON.Array "" }}
@@ -109,7 +109,7 @@ Somewhat awkwardly, when the current context is a basic type that isn't an objec
 {{ end }}
 ```
 
-Output:
+Salida:
 
 ```html
 <div>Apple</div>
@@ -118,13 +118,13 @@ Output:
 <div>Watermelon</div>
 ```
 
-To access an item at a specific index, you could use the following:
+Para acceder a un elemento en un índice específico, podrías usar lo siguiente:
 
 ```html
 <div>{{ .JSON.String "0" }}</div>
 ```
 
-Output:
+Salida:
 
 ```html
 <div>Apple</div>
@@ -132,7 +132,7 @@ Output:
 
 <hr>
 
-JSON response:
+Respuesta JSON:
 
 ```json
 {
@@ -145,21 +145,21 @@ JSON response:
 }
 ```
 
-To easily access deeply nested objects, you can use the following dot notation:
+Para acceder fácilmente a objetos profundamente anidados, puedes usar la siguiente notación de puntos:
 
 ```html
 <div>{{ .JSON.String "user.address.city" }}</div>
 <div>{{ .JSON.String "user.address.state" }}</div>
 ```
 
-Output:
+Salida:
 
 ```html
 <div>New York</div>
 <div>NY</div>
 ```
 
-Using indexes anywhere in the path is also supported:
+También se soporta el uso de índices en cualquier parte de la ruta:
 
 ```json
 {
@@ -179,7 +179,7 @@ Using indexes anywhere in the path is also supported:
 <div>{{ .JSON.String "users.1.name" }}</div>
 ```
 
-Output:
+Salida:
 
 ```html
 <div>John Doe</div>
@@ -188,7 +188,7 @@ Output:
 
 <hr>
 
-JSON response:
+Respuesta JSON:
 
 ```json
 {
@@ -199,17 +199,17 @@ JSON response:
 }
 ```
 
-To check if a field exists, you can use the following:
+Para comprobar si un campo existe, puedes usar lo siguiente:
 
 ```html
 {{ if .JSON.Exists "user.age" }}
   <div>{{ .JSON.Int "user.age" }}</div>
 {{ else }}
-  <div>Age not provided</div>
+  <div>Edad no proporcionada</div>
 {{ end }}
 ```
 
-Output:
+Salida:
 
 ```html
 <div>30</div>
@@ -217,7 +217,7 @@ Output:
 
 <hr>
 
-JSON response:
+Respuesta JSON:
 
 ```json
 {
@@ -226,71 +226,71 @@ JSON response:
 }
 ```
 
-Calculations can be performed, however all numbers must be converted to floats first if they are not already:
+Se pueden realizar cálculos, sin embargo, todos los números deben convertirse primero a floats si no lo son ya:
 
 ```html
 <div>{{ sub (.JSON.Int "price" | toFloat) (.JSON.Int "discount" | toFloat) }}</div>
 ```
 
-Output:
+Salida:
 
 ```html
 <div>90</div>
 ```
 
-Other operations include `add`, `mul`, and `div`.
+Otras operaciones incluyen `add`, `mul` y `div`.
 
 <hr>
 
-In some instances, you may want to know the status code of the response. This can be done using the following:
+En algunos casos, es posible que quieras conocer el código de estado de la respuesta. Esto se puede hacer usando lo siguiente:
 
 ```html
 {{ if eq .Response.StatusCode 200 }}
-  <p>Success!</p>
+  <p>¡Éxito!</p>
 {{ else }}
-  <p>Failed to fetch data</p>
+  <p>Error al obtener datos</p>
 {{ end }}
 ```
 
-You can also access the response headers:
+También puedes acceder a los encabezados de la respuesta:
 
 ```html
 <div>{{ .Response.Header.Get "Content-Type" }}</div>
 ```
 
-## Functions
+## Funciones
 
-The following functions are available on the `JSON` object:
+Las siguientes funciones están disponibles en el objeto `JSON`:
 
-- `String(key string) string`: Returns the value of the key as a string.
-- `Int(key string) int`: Returns the value of the key as an integer.
-- `Float(key string) float`: Returns the value of the key as a float.
-- `Bool(key string) bool`: Returns the value of the key as a boolean.
-- `Array(key string) []JSON`: Returns the value of the key as an array of `JSON` objects.
-- `Exists(key string) bool`: Returns true if the key exists in the JSON object.
+- `String(key string) string`: Devuelve el valor de la clave como una cadena.
+- `Int(key string) int`: Devuelve el valor de la clave como un entero.
+- `Float(key string) float`: Devuelve el valor de la clave como un float.
+- `Bool(key string) bool`: Devuelve el valor de la clave como un booleano.
+- `Array(key string) []JSON`: Devuelve el valor de la clave como un array de objetos `JSON`.
+- `Exists(key string) bool`: Devuelve true si la clave existe en el objeto JSON.
 
-The following helper functions provided by Glance are available:
+Las siguientes funciones de ayuda proporcionadas por Glance están disponibles:
 
-- `toFloat(i int) float`: Converts an integer to a float.
-- `toInt(f float) int`: Converts a float to an integer.
-- `add(a, b float) float`: Adds two numbers.
-- `sub(a, b float) float`: Subtracts two numbers.
-- `mul(a, b float) float`: Multiplies two numbers.
-- `div(a, b float) float`: Divides two numbers.
-- `formatApproxNumber(n int) string`: Formats a number to be more human-readable, e.g. 1000 -> 1k.
-- `formatNumber(n float|int) string`: Formats a number with commas, e.g. 1000 -> 1,000.
+- `toFloat(i int) float`: Convierte un entero a un float.
+- `toInt(f float) int`: Convierte un float a un entero.
+- `add(a, b float) float`: Suma dos números.
+- `sub(a, b float) float`: Resta dos números.
+- `mul(a, b float) float`: Multiplica dos números.
+- `div(a, b float) float`: Divide dos números.
+- `formatApproxNumber(n int) string`: Formatea un número para que sea más legible para humanos, ej. 1000 -> 1k.
+- `formatNumber(n float|int) string`: Formatea un número con comas, ej. 1000 -> 1.000.
 
-The following helper functions provided by Go's `text/template` are available:
+Las siguientes funciones de ayuda proporcionadas por `text/template` de Go están disponibles:
 
-- `eq(a, b any) bool`: Compares two values for equality.
-- `ne(a, b any) bool`: Compares two values for inequality.
-- `lt(a, b any) bool`: Compares two values for less than.
-- `lte(a, b any) bool`: Compares two values for less than or equal to.
-- `gt(a, b any) bool`: Compares two values for greater than.
-- `gte(a, b any) bool`: Compares two values for greater than or equal to.
-- `and(a, b bool) bool`: Returns true if both values are true.
-- `or(a, b bool) bool`: Returns true if either value is true.
-- `not(a bool) bool`: Returns the opposite of the value.
-- `index(a any, b int) any`: Returns the value at the specified index of an array.
-- `len(a any) int`: Returns the length of an array.
-- `printf(format string, a ...any) string`: Returns a formatted string.
+- `eq(a, b any) bool`: Compara dos valores para igualdad.
+- `ne(a, b any) bool`: Compara dos valores para desigualdad.
+- `lt(a, b any) bool`: Compara dos valores para menor que.
+- `lte(a, b any) bool`: Compara dos valores para menor o igual que.
+- `gt(a, b any) bool`: Compara dos valores para mayor que.
+- `gte(a, b any) bool`: Compara dos valores para mayor o igual que.
+- `and(a, b bool) bool`: Devuelve true si ambos valores son true.
+- `or(a, b bool) bool`: Devuelve true si alguno de los valores es true.
+- `not(a bool) bool`: Devuelve lo opuesto al valor.
+- `index(a any, b int) any`: Devuelve el valor en el índice especificado de un array.
+- `len(a any) int`: Devuelve la longitud de un array.
+- `printf(format string, a ...any) string`: Devuelve una cadena formateada.
